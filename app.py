@@ -1,12 +1,11 @@
-
 import streamlit as st
 from pptx import Presentation
-import openai
+from openai import OpenAI
 import io
 from PIL import Image
 
-# Set OpenAI API key using Streamlit secrets
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+# Initialise OpenAI client using the secret key
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 def extract_text_from_pptx(file):
     prs = Presentation(file)
@@ -51,13 +50,14 @@ Return the uplifted slide-by-slide version, labelled with headers like:
     return prompt
 
 def call_chatgpt(prompt):
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.5
     )
-    return response['choices'][0]['message']['content']
+    return response.choices[0].message.content
 
+# Streamlit UI
 st.set_page_config(page_title="Garibaldi Lesson Uplifter", layout="centered")
 
 col1, col2 = st.columns([1, 4])
