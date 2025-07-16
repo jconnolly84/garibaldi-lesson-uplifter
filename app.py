@@ -1,10 +1,11 @@
 # Lessonary Uplifter (Streamlit GUI Version with Branding)
 # Updated: Now includes Pixabay + Pexels image fetcher for slides missing visuals and inserts them into PowerPoint
 # NEW: Adds relevant YouTube videos only when justified
+# FIXED: Inserts new slides in correct TLC structure position + clickable YouTube links
 
 import streamlit as st
 from pptx import Presentation
-from pptx.util import Inches
+from pptx.util import Inches, Pt
 from openai import OpenAI
 import io
 from PIL import Image
@@ -108,46 +109,62 @@ def call_chatgpt(prompt):
     )
     return response.choices[0].message.content
 
-# NEW: Insert images + YouTube into .pptx using AI suggestions
+# --- Insert Images + Video Links ---
 def insert_images_into_pptx(uplifted_text):
     prs = Presentation()
+    structure_order = [
+        "Ready to Learn", "Connect & Recall", "Explore", "Collaborate", "Independent Practice", "Review", "Exit"
+    ]
+    grouped_slides = {key: [] for key in structure_order}
+    current_key = "Other"
+
     for block in uplifted_text.split("--- Slide"):
         if not block.strip():
             continue
         lines = block.strip().split("\n")
-        if len(lines) < 2:
-            continue
         title = lines[0].strip(": ")
         content = "\n".join(lines[1:]).strip()
+        for key in structure_order:
+            if key in title:
+                current_key = key
+                break
+        grouped_slides[current_key].append((title, content))
 
-        slide = prs.slides.add_slide(prs.slide_layouts[5])
-        title_shape = slide.shapes.title
-        if title_shape:
-            title_shape.text = title
-        txBox = slide.shapes.add_textbox(Inches(1), Inches(1.5), Inches(8), Inches(4.5))
-        tf = txBox.text_frame
-        tf.text = content
+    for key in structure_order:
+        for title, content in grouped_slides[key]:
+            slide = prs.slides.add_slide(prs.slide_layouts[5])
+            title_shape = slide.shapes.title
+            if title_shape:
+                title_shape.text = title
+            txBox = slide.shapes.add_textbox(Inches(0.5), Inches(1.5), Inches(8), Inches(4.5))
+            tf = txBox.text_frame
+            tf.text = content
 
-        image_url = fetch_best_image(content)
-        if image_url:
-            img_data = requests.get(image_url).content
-            tmp_img = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
-            tmp_img.write(img_data)
-            tmp_img.close()
-            slide.shapes.add_picture(tmp_img.name, Inches(5.5), Inches(1.5), width=Inches(3))
-            os.unlink(tmp_img.name)
+            image_url = fetch_best_image(content)
+            if image_url:
+                img_data = requests.get(image_url).content
+                tmp_img = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
+                tmp_img.write(img_data)
+                tmp_img.close()
+                slide.shapes.add_picture(tmp_img.name, Inches(6), Inches(1.5), width=Inches(3))
+                os.unlink(tmp_img.name)
 
-        video_url = fetch_youtube_video(content)
-        if video_url:
-            note = slide.notes_slide.notes_text_frame
-            note.text = f"Suggested video: {video_url}"
+            video_url = fetch_youtube_video(content)
+            if video_url:
+                link_box = slide.shapes.add_textbox(Inches(0.5), Inches(6), Inches(6), Inches(0.5))
+                link_tf = link_box.text_frame
+                p = link_tf.paragraphs[0]
+                run = p.add_run()
+                run.text = "📺 Click to watch video"
+                run.hyperlink.address = video_url
+                run.font.size = Pt(12)
 
     return prs
 
 # --- Streamlit App ---
 st.set_page_config(page_title="Lessonary Uplifter", layout="centered")
 
-st.image("LOGO_Lessonary.png", use_column_width=True)
+st.image("LOGO_Lessonary.png", use_container_width=True)
 st.title("Lessonary Uplifter")
 st.write("📚 Upload a PowerPoint and get it automatically restructured using your school's T&L model.")
 
