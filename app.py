@@ -12,6 +12,7 @@ from PIL import Image
 import requests
 import tempfile
 import os
+from datetime import datetime
 
 # --- Config ---
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
@@ -172,6 +173,10 @@ st.write("📚 Upload a PowerPoint and get it automatically restructured using y
 uploaded_file = st.file_uploader("Upload a .pptx file", type="pptx")
 
 if uploaded_file is not None:
+    uploaded_filename = uploaded_file.name.replace(".pptx", "")
+    upload_date = datetime.now().strftime("%Y%m%d")
+    output_filename = f"{uploaded_filename}_uplifted_{upload_date}.pptx"
+
     with st.spinner("Extracting slide text and analysing..."):
         slide_text = extract_text_from_pptx(uploaded_file)
         prompt = build_prompt(slide_text)
@@ -197,7 +202,7 @@ if uploaded_file is not None:
             st.download_button(
                 label="📥 Download PowerPoint File",
                 data=f,
-                file_name="Lessonary_Uplifted_Lesson.pptx",
+                file_name=output_filename,
                 mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"
             )
         os.unlink(tmp_pptx.name)
