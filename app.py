@@ -5,7 +5,7 @@
 import streamlit as st
 from pptx import Presentation
 from pptx.util import Inches
-import openai
+from openai import OpenAI
 import io
 from PIL import Image
 import requests
@@ -13,7 +13,7 @@ import tempfile
 import os
 
 # --- Config ---
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 # --- Image Fetching Functions ---
 def fetch_pixabay_image(query):
@@ -101,12 +101,12 @@ Return the uplifted slide-by-slide version, labelled with headers like:
     return prompt
 
 def call_chatgpt(prompt):
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.5
     )
-    return response['choices'][0]['message']['content']
+    return response.choices[0].message.content
 
 # NEW: Insert images + YouTube into .pptx using AI suggestions
 def insert_images_into_pptx(uplifted_text):
@@ -147,12 +147,9 @@ def insert_images_into_pptx(uplifted_text):
 # --- Streamlit App ---
 st.set_page_config(page_title="Lessonary Uplifter", layout="centered")
 
-col1, col2 = st.columns([1, 4])
-with col1:
-    st.image("LOGO_Lessonary.png", width=100)
-with col2:
-    st.title("Lessonary Uplifter")
-    st.write("📚 Upload a PowerPoint and get it automatically restructured using your school's T&L model.")
+st.image("LOGO_Lessonary.png", use_column_width=True)
+st.title("Lessonary Uplifter")
+st.write("📚 Upload a PowerPoint and get it automatically restructured using your school's T&L model.")
 
 uploaded_file = st.file_uploader("Upload a .pptx file", type="pptx")
 
