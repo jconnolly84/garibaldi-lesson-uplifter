@@ -116,6 +116,7 @@ def insert_images_into_pptx(uplifted_text):
         "Ready to Learn", "Connect & Recall", "Explore", "Collaborate", "Independent Practice", "Review", "Exit"
     ]
     grouped_slides = {key: [] for key in structure_order}
+    grouped_slides["Other"] = []
     current_key = "Other"
 
     for block in uplifted_text.split("--- Slide"):
