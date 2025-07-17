@@ -145,11 +145,11 @@ def insert_images_into_template(uplifted_text):
         slide = prs.slides.add_slide(layout)
 
         for shape in slide.placeholders:
-            if shape.placeholder_format.idx == 0:
+            if "Title" in shape.name:
                 shape.text = title
-            elif shape.placeholder_format.idx == 1:
+            elif "Content" in shape.name or "Body" in shape.name:
                 shape.text = content
-            elif shape.placeholder_format.idx in [2, 3, 4, 5]:
+            elif any(img in shape.name for img in ["Image", "Picture", "Grid"]):
                 image_url = fetch_best_image(content)
                 if image_url:
                     img_data = requests.get(image_url).content
