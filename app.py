@@ -1,4 +1,4 @@
-# Lessonary Uplifter (Streamlit GUI Version with Template, Strategy, and Media Support)
+# Lessonary Uplifter (Streamlit GUI Version with Template, Strategy, and Media Support + AI Boost Option)
 
 import streamlit as st
 from pptx import Presentation
@@ -67,7 +67,13 @@ def extract_text_from_pptx(file):
         content.append(slide_text.strip())
     return "\n\n".join(content)
 
-def build_prompt(slide_text):
+def build_prompt(slide_text, enrichment_level="Base"):
+    extra = ""
+    if enrichment_level == "Enhanced":
+        extra = "Add real-world links, extend explanations, and enrich slides with more detail."
+    elif enrichment_level == "Max":
+        extra = "Add interactive tasks, teacher narration prompts, cross-curricular links, and advanced vocabulary."
+
     prompt = f"""
 You are an expert teacher and lesson designer at a secondary school. A teacher has uploaded a PowerPoint lesson.
 
@@ -92,6 +98,7 @@ Your task:
 - Include a Vocabulary slide (max 6 terms)
 - Include a What is the Connection slide with 4 image prompts
 - End with a Homework task slide (relevant extension task, max 30 mins, bring into next lesson)
+{extra}
 
 Here is the raw content:
 
@@ -111,72 +118,13 @@ def call_chatgpt(prompt):
     )
     return response.choices[0].message.content
 
-def insert_images_into_template(uplifted_text):
-    template_path = "Lessonary_Template_Structure.pptx"
-    if not os.path.exists(template_path):
-        raise FileNotFoundError("Template file not found.")
-    prs = Presentation(template_path)
-
-    slide_layouts = {
-        "Standard": prs.slide_layouts[0],
-        "Grid": prs.slide_layouts[1],
-        "Objectives": prs.slide_layouts[2],
-        "Vocabulary": prs.slide_layouts[3],
-        "Homework": prs.slide_layouts[4]
-    }
-
-    for block in uplifted_text.split("--- Slide"):
-        if not block.strip():
-            continue
-        lines = block.strip().split("\n")
-        title = lines[0].strip(": ")
-        content = "\n".join(lines[1:]).strip()
-
-        layout = slide_layouts.get("Standard")
-        if "What is the Connection" in title:
-            layout = slide_layouts.get("Grid")
-        elif "Objective" in title:
-            layout = slide_layouts.get("Objectives")
-        elif "Vocabulary" in title:
-            layout = slide_layouts.get("Vocabulary")
-        elif "Homework" in title:
-            layout = slide_layouts.get("Homework")
-
-        slide = prs.slides.add_slide(layout)
-
-        for shape in slide.placeholders:
-            if "Title" in shape.name:
-                shape.text = title
-            elif "Content" in shape.name or "Body" in shape.name:
-                shape.text = content
-            elif any(img in shape.name for img in ["Image", "Picture", "Grid"]):
-                image_url = fetch_best_image(content)
-                if image_url:
-                    img_data = requests.get(image_url).content
-                    with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp_img:
-                        tmp_img.write(img_data)
-                        tmp_img.close()
-                        slide.shapes.add_picture(tmp_img.name, shape.left, shape.top, shape.width, shape.height)
-                        os.unlink(tmp_img.name)
-
-        if "youtube.com" in content or "youtu.be" in content:
-            video_url = fetch_youtube_video(content)
-            if video_url:
-                link_box = slide.shapes.add_textbox(Inches(0.5), Inches(6), Inches(6), Inches(0.5))
-                link_tf = link_box.text_frame
-                p = link_tf.paragraphs[0]
-                run = p.add_run()
-                run.text = "📺 Click to watch video"
-                run.hyperlink.address = video_url
-                run.font.size = Pt(12)
-
-    return prs
-
-# --- Streamlit App ---
+# UI addition: enrichment dropdown
 st.set_page_config(page_title="Lessonary Uplifter", layout="centered")
 st.image("LOGO_Lessonary.png", use_container_width=True)
 st.title("Lessonary Uplifter")
 st.write("📚 Upload a PowerPoint and get it automatically restructured using your school's T&L model.")
+
+enrichment_level = st.selectbox("Optional AI Boost: Enrichment Level", ["Base", "Enhanced", "Max"], index=0)
 
 uploaded_file = st.file_uploader("Upload a .pptx file", type="pptx")
 
@@ -187,7 +135,7 @@ if uploaded_file is not None:
 
     with st.spinner("Extracting slide text and analysing..."):
         slide_text = extract_text_from_pptx(uploaded_file)
-        prompt = build_prompt(slide_text)
+        prompt = build_prompt(slide_text, enrichment_level=enrichment_level)
         uplifted_lesson = call_chatgpt(prompt)
 
     st.success("✅ Lesson uplift complete!")
