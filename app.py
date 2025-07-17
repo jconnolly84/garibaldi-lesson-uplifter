@@ -1,7 +1,4 @@
-# Lessonary Uplifter (Streamlit GUI Version with Branding)
-# Updated: Now includes Pixabay + Pexels image fetcher for slides missing visuals and inserts them into PowerPoint
-# NEW: Adds relevant YouTube videos only when justified
-# FIXED: Inserts new slides in correct TLC structure position + clickable YouTube links
+# Lessonary Uplifter (Streamlit GUI Version with Template, Strategy, and Media Support)
 
 import streamlit as st
 from pptx import Presentation
@@ -82,7 +79,7 @@ Please analyse and rebuild the lesson using the following structure:
 4. Collaborate / Facilitate
 5. Independent Practice (FIT)
 6. Review & Improve
-7. Exit & ILT
+7. Homework
 
 Your task:
 - Reorder content into that structure
@@ -90,7 +87,11 @@ Your task:
 - Improve clarity, challenge, and engagement
 - Recommend relevant images or diagrams for each slide
 - Recommend a supporting YouTube video only if it enhances learning
-- Embed school-wide TLC strategies: retrieval practice, desirable difficulty, cold calling, red pen reflection, the Learning Pit, etc.
+- Embed school-wide TLC strategies from TLC_Strategies.txt
+- Include a Key Objective and Differentiated Outcomes slide
+- Include a Vocabulary slide (max 6 terms)
+- Include a What is the Connection slide with 4 image prompts
+- End with a Homework task slide (relevant extension task, max 30 mins, bring into next lesson)
 
 Here is the raw content:
 
@@ -110,15 +111,19 @@ def call_chatgpt(prompt):
     )
     return response.choices[0].message.content
 
-# --- Insert Images + Video Links ---
-def insert_images_into_pptx(uplifted_text):
-    prs = Presentation()
-    structure_order = [
-        "Ready to Learn", "Connect & Recall", "Explore", "Collaborate", "Independent Practice", "Review", "Exit"
-    ]
-    grouped_slides = {key: [] for key in structure_order}
-    grouped_slides["Other"] = []
-    current_key = "Other"
+def insert_images_into_template(uplifted_text):
+    template_path = "Lessonary_Template_Structure.pptx"
+    if not os.path.exists(template_path):
+        raise FileNotFoundError("Template file not found.")
+    prs = Presentation(template_path)
+
+    slide_layouts = {
+        "Standard": prs.slide_layouts[0],
+        "Grid": prs.slide_layouts[1],
+        "Objectives": prs.slide_layouts[2],
+        "Vocabulary": prs.slide_layouts[3],
+        "Homework": prs.slide_layouts[4]
+    }
 
     for block in uplifted_text.split("--- Slide"):
         if not block.strip():
@@ -126,31 +131,35 @@ def insert_images_into_pptx(uplifted_text):
         lines = block.strip().split("\n")
         title = lines[0].strip(": ")
         content = "\n".join(lines[1:]).strip()
-        for key in structure_order:
-            if key in title:
-                current_key = key
-                break
-        grouped_slides[current_key].append((title, content))
 
-    for key in structure_order:
-        for title, content in grouped_slides[key]:
-            slide = prs.slides.add_slide(prs.slide_layouts[5])
-            title_shape = slide.shapes.title
-            if title_shape:
-                title_shape.text = title
-            txBox = slide.shapes.add_textbox(Inches(0.5), Inches(1.5), Inches(8), Inches(4.5))
-            tf = txBox.text_frame
-            tf.text = content
+        layout = slide_layouts.get("Standard")
+        if "What is the Connection" in title:
+            layout = slide_layouts.get("Grid")
+        elif "Objective" in title:
+            layout = slide_layouts.get("Objectives")
+        elif "Vocabulary" in title:
+            layout = slide_layouts.get("Vocabulary")
+        elif "Homework" in title:
+            layout = slide_layouts.get("Homework")
 
-            image_url = fetch_best_image(content)
-            if image_url:
-                img_data = requests.get(image_url).content
-                tmp_img = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
-                tmp_img.write(img_data)
-                tmp_img.close()
-                slide.shapes.add_picture(tmp_img.name, Inches(6), Inches(1.5), width=Inches(3))
-                os.unlink(tmp_img.name)
+        slide = prs.slides.add_slide(layout)
 
+        for shape in slide.placeholders:
+            if shape.placeholder_format.idx == 0:
+                shape.text = title
+            elif shape.placeholder_format.idx == 1:
+                shape.text = content
+            elif shape.placeholder_format.idx in [2, 3, 4, 5]:
+                image_url = fetch_best_image(content)
+                if image_url:
+                    img_data = requests.get(image_url).content
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp_img:
+                        tmp_img.write(img_data)
+                        tmp_img.close()
+                        slide.shapes.add_picture(tmp_img.name, shape.left, shape.top, shape.width, shape.height)
+                        os.unlink(tmp_img.name)
+
+        if "youtube.com" in content or "youtu.be" in content:
             video_url = fetch_youtube_video(content)
             if video_url:
                 link_box = slide.shapes.add_textbox(Inches(0.5), Inches(6), Inches(6), Inches(0.5))
@@ -165,7 +174,6 @@ def insert_images_into_pptx(uplifted_text):
 
 # --- Streamlit App ---
 st.set_page_config(page_title="Lessonary Uplifter", layout="centered")
-
 st.image("LOGO_Lessonary.png", use_container_width=True)
 st.title("Lessonary Uplifter")
 st.write("📚 Upload a PowerPoint and get it automatically restructured using your school's T&L model.")
@@ -194,7 +202,7 @@ if uploaded_file is not None:
     )
 
     if st.button("📤 Download as PPTX with AI Images & Videos"):
-        pptx_output = insert_images_into_pptx(uplifted_lesson)
+        pptx_output = insert_images_into_template(uplifted_lesson)
         tmp_pptx = tempfile.NamedTemporaryFile(delete=False, suffix=".pptx")
         pptx_output.save(tmp_pptx.name)
         tmp_pptx.close()
