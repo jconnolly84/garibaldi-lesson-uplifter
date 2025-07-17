@@ -1,0 +1,178 @@
+# TLC_Strategies.txt
+
+A deep reference list of pedagogical strategies aligned to your school's Teaching & Learning (T&L) structure. Each strategy includes a description, tagged lesson structure sections, and suggestions for supporting image or video content types.
+
+---
+
+## 🔹 Retrieval Practice
+**Description:** Low-stakes recall tasks designed to reactivate prior knowledge and improve memory consolidation. Can include quizzes, knowledge dumps, mini-whiteboard answers, or pair talk.
+**Use In:** Connect & Recall, Review & Improve, Homework
+**Suggested Media:** Quiz icons, memory diagrams, multiple choice graphics, Kahoot screenshots, spaced repetition explainer videos
+
+---
+
+## 🔹 Cold Calling
+**Description:** A questioning technique where the teacher selects students to answer, rather than asking for volunteers. Builds accountability and engagement.
+**Use In:** Ready to Learn / Entry, Explore / Impart Knowledge, Collaborate / Facilitate
+**Suggested Media:** Classroom interaction icons, cold calling technique charts, classroom discussion example videos
+
+---
+
+## 🔹 Red Pen Reflection
+**Description:** Pupils use a red pen to respond to feedback, edit answers, or reflect on how to improve. Encourages ownership and metacognition.
+**Use In:** Review & Improve, Independent Practice (FIT), Homework
+**Suggested Media:** Student work before/after shots, red pen annotation examples, feedback loop graphics
+
+---
+
+## 🔹 The Learning Pit
+**Description:** A model to show that struggle and confusion are part of the learning process. Promotes resilience and growth mindset.
+**Use In:** Explore / Impart Knowledge, Collaborate / Facilitate
+**Suggested Media:** Learning Pit diagrams, animated mindset explainer videos
+
+---
+
+## 🔹 Desirable Difficulty
+**Description:** Learning tasks should be challenging enough to require effort. Avoid over-scaffolding and promote deeper thinking.
+**Use In:** Explore / Impart Knowledge, Independent Practice (FIT)
+**Suggested Media:** Brain strain visual metaphors, challenge zone diagrams, cognitive load theory videos
+
+---
+
+## 🔹 Silent Start / Do Now
+**Description:** A calm independent starter task to settle learners and prepare them for the lesson.
+**Use In:** Ready to Learn / Entry
+**Suggested Media:** Calm starter icons, independent thinking graphics, classroom calm visuals
+
+---
+
+## 🔹 Think-Pair-Share
+**Description:** Pupils first think individually, then discuss in pairs before sharing ideas with the whole class. Encourages wider participation.
+**Use In:** Explore / Impart Knowledge, Collaborate / Facilitate
+**Suggested Media:** Conversation icons, discussion diagrams, peer learning videos
+
+---
+
+## 🔹 Exit Ticket
+**Description:** A quick reflective task completed at the end of the lesson to summarise learning or respond to a key question.
+**Use In:** Homework
+**Suggested Media:** Exit ticket templates, reflection icons, short wrap-up videos
+
+---
+
+## 🔹 Modelling and Worked Examples
+**Description:** Demonstrating the thought process behind a task or problem using visual or verbal explanation.
+**Use In:** Explore / Impart Knowledge, Collaborate / Facilitate
+**Suggested Media:** Step-by-step examples, live modelling screenshots, how-to tutorial videos
+
+---
+
+## 🔹 Peer Assessment
+**Description:** Pupils review each other’s work using clear success criteria, giving constructive feedback.
+**Use In:** Collaborate / Facilitate, Review & Improve
+**Suggested Media:** Marking rubrics, feedback speech bubbles, student work review photos
+
+---
+
+## 🔹 Self Assessment Checklist
+**Description:** Pupils evaluate their own work using a success criteria rubric or checklist.
+**Use In:** Review & Improve, Independent Practice (FIT)
+**Suggested Media:** Tick-box visuals, checklists, self-marking videos
+
+---
+
+## 🔹 Spaced Retrieval
+**Description:** Revisiting prior content regularly over time to increase long-term retention.
+**Use In:** Connect & Recall, Homework
+**Suggested Media:** Spacing effect charts, calendar review graphics, memory retention animations
+
+---
+
+## 🔹 Dual Coding
+**Description:** Combining words with visuals (e.g., diagrams, icons, timelines) to support understanding and memory.
+**Use In:** Explore / Impart Knowledge, Review & Improve
+**Suggested Media:** Infographics, labelled diagrams, visual explanations
+
+---
+
+## 🔹 Carousel or Station Work
+**Description:** Pupils rotate around different stations or activities to explore multiple tasks or topics.
+**Use In:** Collaborate / Facilitate
+**Suggested Media:** Station signs, activity rotation graphics, collaborative work images
+
+---
+
+## 🔹 Low-Stakes Quizzing
+**Description:** Frequent informal testing that carries no consequence. Builds fluency and confidence.
+**Use In:** Connect & Recall, Review & Improve
+**Suggested Media:** Quiz icons, leaderboard screenshots, mini test videos
+
+---
+
+## 🔹 Redrafting / Improving a Model Answer
+**Description:** Students edit or rewrite work in response to feedback or after analysing a high-quality exemplar.
+**Use In:** Review & Improve, Independent Practice (FIT)
+**Suggested Media:** Before/after comparisons, exemplar paragraphs, editing videos
+
+---
+
+## 🔹 Interleaving
+**Description:** Mixing up topics or types of problems in practice sessions. Helps pupils make connections and deepen understanding.
+**Use In:** Independent Practice (FIT), Homework
+**Suggested Media:** Mixed problem charts, learning strategy visuals, spaced vs. blocked learning animations
+
+---
+
+## 🔹 Metacognitive Prompts
+**Description:** Encouraging pupils to think about *how* they learn, e.g., "What strategy did you use to solve this?"
+**Use In:** Review & Improve, Collaborate / Facilitate
+**Suggested Media:** Thinking brain icons, metacognition charts, learner reflection videos
+
+---
+
+## 🔹 Live Feedback
+**Description:** Real-time verbal or written feedback during the lesson, often through whole-class marking or circulating.
+**Use In:** Explore / Impart Knowledge, Independent Practice (FIT)
+**Suggested Media:** Marking with teacher icons, live annotation shots, feedback in action clips
+
+---
+
+## 🔹 Chunking
+**Description:** Breaking content into manageable sections with pauses for processing and checking understanding.
+**Use In:** Explore / Impart Knowledge, Connect & Recall
+**Suggested Media:** Content blocks, info card visuals, scaffold animations
+
+---
+
+## 🔹 Confidence Line / Poll
+**Description:** Pupils indicate how confident they feel on a topic (e.g., line in the classroom or digital poll).
+**Use In:** Homework, Ready to Learn / Entry
+**Suggested Media:** Poll graphics, confidence bar visuals, response thermometer charts
+
+---
+
+## 🔹 Keyword Mind Map
+**Description:** Pupils build a diagram of keywords and concepts. Can be used at the start or end to capture prior or learned knowledge.
+**Use In:** Connect & Recall, Review & Improve, Homework
+**Suggested Media:** Mind map templates, concept mapping icons, collaborative drawing screenshots
+
+---
+
+## 🔹 Key Objective & Differentiated Outcomes
+**Description:** Automatically generated clear goal for the lesson and success criteria for ALL / MOST / SOME learners based on Bloom’s taxonomy. Each is one concise sentence.
+**Use In:** Ready to Learn / Entry
+**Suggested Media:** Goal icons, Bloom’s taxonomy triangle diagrams, concise objective visual frames
+
+---
+
+## 🔹 What is the Connection?
+**Description:** A visual thinking starter showing four images. Students must work out the link between them, which leads into the lesson theme.
+**Use In:** Ready to Learn / Entry
+**Suggested Media:** A grid of 4 lesson-themed images, ‘thinking’ or mystery icons, inquiry-based lesson intro videos
+
+---
+
+## 🔹 Homework Extension Task
+**Description:** A relevant 30-minute task designed to consolidate or extend the key learning. Students must be able to bring in a product to show the teacher in the next lesson.
+**Use In:** Homework
+**Suggested Media:** Task instruction visuals, student artefact photos, related tutorial videos
